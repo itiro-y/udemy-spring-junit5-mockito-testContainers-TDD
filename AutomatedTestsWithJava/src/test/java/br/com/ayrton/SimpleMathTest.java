@@ -1,5 +1,6 @@
 package br.com.ayrton;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -74,7 +75,8 @@ class SimpleMathTest {
         assertNotNull(result, "The result is null!");
     }
 
-    //@Test
+    @Disabled
+    @Test
     @DisplayName("Test division by zero")
     void testDivision_WhenFirstNumberIsDividedByZero_ShouldThrowArithmeticException() throws ArithmeticException {
         fail();
