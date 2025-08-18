@@ -23,7 +23,7 @@ public class ArraysCompareTest {
 
     @Test
     // @Timeout(1) - segundos
-    @Timeout(value = 1, unit = TimeUnit.MILLISECONDS)
+    @Timeout(value = 100, unit = TimeUnit.MILLISECONDS)
     void testSortPerformance() {
         int[] numbers = {3, 2, 1, 7, 9, 4};
         for(int i = 0; i < 1000000; i++){

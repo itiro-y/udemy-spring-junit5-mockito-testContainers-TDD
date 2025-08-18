@@ -1,5 +1,6 @@
-package br.com.ayrton;
+package br.com.ayrton.math;
 
+import br.com.ayrton.SimpleMath;
 import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
