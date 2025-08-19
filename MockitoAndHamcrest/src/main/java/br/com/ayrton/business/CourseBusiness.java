@@ -1,6 +1,4 @@
-package br.com.ayrton;
-
-import br.com.ayrton.service.CourseService;
+package br.com.ayrton.business;
 
 import java.util.ArrayList;
 import java.util.List;

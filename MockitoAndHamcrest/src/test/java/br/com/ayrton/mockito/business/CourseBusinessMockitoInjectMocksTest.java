@@ -1,7 +1,7 @@
-package br.com.ayrton.mockito;
+package br.com.ayrton.mockito.business;
 
-import br.com.ayrton.CourseBusiness;
-import br.com.ayrton.service.CourseService;
+import br.com.ayrton.business.CourseBusiness;
+import br.com.ayrton.business.CourseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

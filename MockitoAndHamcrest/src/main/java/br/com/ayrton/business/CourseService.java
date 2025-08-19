@@ -1,4 +1,4 @@
-package br.com.ayrton.service;
+package br.com.ayrton.business;
 
 import java.util.List;
 

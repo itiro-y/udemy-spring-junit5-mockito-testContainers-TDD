@@ -1,7 +1,5 @@
 package br.com.ayrton.business;
 
-import br.com.ayrton.CourseBusiness;
-import br.com.ayrton.service.CourseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;

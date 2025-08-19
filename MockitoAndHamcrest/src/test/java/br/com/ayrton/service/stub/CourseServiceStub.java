@@ -1,6 +1,6 @@
 package br.com.ayrton.service.stub;
 
-import br.com.ayrton.service.CourseService;
+import br.com.ayrton.business.CourseService;
 
 import java.util.Arrays;
 import java.util.List;

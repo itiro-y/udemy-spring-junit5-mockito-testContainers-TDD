@@ -1,7 +1,5 @@
 package br.com.ayrton.business;
 
-import br.com.ayrton.CourseBusiness;
-import br.com.ayrton.service.CourseService;
 import br.com.ayrton.service.stub.CourseServiceStub;
 import org.junit.jupiter.api.Test;
 
