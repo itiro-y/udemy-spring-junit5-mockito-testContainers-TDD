@@ -9,4 +9,6 @@ public interface CourseService {
     // adicionando um novo metodo aqui, iria "quebrar" a compatibilidade com o stub
     // este é o maior problema do stub, não é nada prático
 
+    public void deleteCourse(String course);
+
 }

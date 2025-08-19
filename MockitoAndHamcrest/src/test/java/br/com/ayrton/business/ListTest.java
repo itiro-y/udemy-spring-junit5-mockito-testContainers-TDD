@@ -56,4 +56,21 @@ public class ListTest {
         assertEquals("Ayrton", list.get(1), () -> "The mocked list should return 'Ayrton' when get(0) is called!");
 //      assertNull(list.get(1), () -> "The mocked list should return null when get(1) is called!");
     }
+
+    @Test
+    void testMockingList_WhenThrowsAnException(){
+        // Given
+        List list = mock(List.class);
+
+        // If you are using argument matchers, all arguments are provided by matchers
+        when(list.get(anyInt())).thenThrow(new RuntimeException("Run time Exception!"));
+
+        // When & Then
+        assertThrows(
+                RuntimeException.class,
+                () -> {list.get(anyInt());},
+                () -> "Expected RuntimeException to be thrown when get(anyInt()) is called");
+
+
+    }
 }

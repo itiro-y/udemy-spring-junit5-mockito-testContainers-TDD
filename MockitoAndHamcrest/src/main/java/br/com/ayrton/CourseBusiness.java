@@ -29,4 +29,14 @@ public class CourseBusiness {
         }
         return filteredCourses;
     }
+
+    public void deleteCourseNotSpring(String student) {
+        List<String> allCourses = courseService.retrieveCourses(student);
+
+        for(String course: allCourses){
+            if(!course.contains("Spring")){
+                courseService.deleteCourse(course);
+            }
+        }
+    }
 }
