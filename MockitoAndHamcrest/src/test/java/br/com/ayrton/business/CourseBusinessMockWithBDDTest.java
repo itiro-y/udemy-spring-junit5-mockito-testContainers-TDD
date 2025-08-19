@@ -4,6 +4,7 @@ import br.com.ayrton.CourseBusiness;
 import br.com.ayrton.service.CourseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,9 +57,71 @@ class CourseBusinessMockWithBDDTest {
         business.deleteCourseNotSpring("Ayrton");
 
         //verify(mockService).deleteCourse("Agile Desmistificado com Scrum, XP, Kanban e Trello");
-        verify(mockService, times(1)).deleteCourse("Agile Desmistificado com Scrum, XP, Kanban e Trello");
-        verify(mockService, atLeast(1)).deleteCourse("Arquitetura de Microsserviços do 0 com ASP.NET, .NET 6 e C#");
-        verify(mockService, atLeastOnce()).deleteCourse("Kotlin para DEV's Java: Aprenda a Linguagem Padrão do Android");
-        verify(mockService, never()).deleteCourse("REST API's RESTFul do 0 à AWS com Spring Boot 3 Kotlin e Docker");
+        verify(mockService, times(1))
+                .deleteCourse("Agile Desmistificado com Scrum, XP, Kanban e Trello");
+        verify(mockService, atLeast(1))
+                .deleteCourse("Arquitetura de Microsserviços do 0 com ASP.NET, .NET 6 e C#");
+        verify(mockService, atLeastOnce())
+                .deleteCourse("Kotlin para DEV's Java: Aprenda a Linguagem Padrão do Android");
+        verify(mockService, never())
+                .deleteCourse("REST API's RESTFul do 0 à AWS com Spring Boot 3 Kotlin e Docker");
     }
+
+    @Test
+    void testDeleteCourseNotSpring_UsingMockitoVerifyV2(){
+        given(mockService.retrieveCourses("Ayrton")).willReturn(courses);
+        String agileCourse = "Agile Desmistificado com Scrum, XP, Kanban e Trello";
+        String restKotlinCourse = "REST API's RESTFul do 0 à AWS com Spring Boot 3 Kotlin e Docker";
+
+        business.deleteCourseNotSpring("Ayrton");
+
+
+        then(mockService)
+                .should()
+                    .deleteCourse(agileCourse);
+        then(mockService)
+                .should(never())
+                    .deleteCourse(restKotlinCourse);
+    }
+
+    @Test
+    void testDeleteCourseNotSpring_CapturingArguments(){
+        courses = Arrays.asList(
+                "Agile Desmistificado com Scrum, XP, Kanban e Trello",
+                "Microsserviços do 0 com Spring Cloud, Kotlin e Docker"
+        );
+
+        given(mockService.retrieveCourses("Ayrton")).willReturn(courses);
+
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        String agileCourse = "Agile Desmistificado com Scrum, XP, Kanban e Trello";
+
+        business.deleteCourseNotSpring("Ayrton");
+
+
+        then(mockService)
+                .should()
+                .deleteCourse(argumentCaptor.capture());
+
+        assertThat(argumentCaptor.getValue(), is(agileCourse));
+    }
+
+    @Test
+    void testDeleteCourseNotSpring_CapturingArgumentsV2(){
+
+        given(mockService.retrieveCourses("Ayrton")).willReturn(courses);
+
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+
+        business.deleteCourseNotSpring("Ayrton");
+
+
+        then(mockService)
+                .should(times(7))
+                .deleteCourse(argumentCaptor.capture());
+
+        assertThat(argumentCaptor.getAllValues().size(), is(7));
+    }
+
 }
