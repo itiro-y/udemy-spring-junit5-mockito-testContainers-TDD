@@ -1,33 +1,32 @@
 package com.br.ayrton.repositories;
 
 import com.br.ayrton.model.Person;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
-@TestPropertySource(properties = {
-        "spring.datasource.url=jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;MODE=MYSQL",
-        "spring.datasource.driverClassName=org.h2.Driver",
-        "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect",
-        "spring.jpa.hibernate.ddl-auto=create-drop"
+public class PersonRepositoryTest {
 
-})
-class PersonRepositoryTest {
     @Autowired
     private PersonRepository personRepository;
+    private Person person0;
+
+    @BeforeEach
+    void setup(){
+        person0 = new Person("Ayrton", "Yoshii", "ayoshii@email.com", "Endereço XYZ", "male");
+    }
 
     @DisplayName("Given Person Object When Saved Then Return Saved Person")
     @Test
     void testGivenPersonObject_whenSaved_thenReturnSavedPerson(){
-        Person person0 = new Person("Ayrton", "Yoshii", "ayoshii@email.com", "Endereço XYZ", "male");
 
         Person savedPerson = personRepository.save(person0);
 
@@ -38,7 +37,6 @@ class PersonRepositoryTest {
     @DisplayName("Given Person Object When Find All Is Invoked Then Return a List of Person")
     @Test
     void testGivenPersonObject_whenFindAll_thenReturnPersonList(){
-        Person person0 = new Person("Ayrton", "Yoshii", "ayoshii@email.com", "Endereço XYZ", "male");
         Person person1 = new Person("Pedro", "Matias", "ayoshii@email.com", "Endereço XYZ", "male");
         personRepository.save(person0);
         personRepository.save(person1);
@@ -55,8 +53,6 @@ class PersonRepositoryTest {
     @DisplayName("Given Person Object When findById Then Return Person Object")
     @Test
     void testGivenPersonObject_whenFindById_thenReturnPersonObject(){
-        Person person0 = new Person("ASD", "DSA", "ayoshii@email.com", "Endereço XYZ", "male");
-
         personRepository.save(person0);
 
         Person foundPerson = personRepository.findById(person0.getId()).get();
@@ -68,15 +64,71 @@ class PersonRepositoryTest {
     @DisplayName("Given Person Object When findByEmail Then Return Person Object")
     @Test
     void testGivenPersonObject_whenFindByEmail_thenReturnPersonObject(){
-        Person person0 = new Person("ABC", "DASD", "ayoshii@email.com", "Endereço XYZ", "male");
-
         personRepository.save(person0);
 
         Person foundPerson = personRepository.findByEmail(person0.getEmail()).get();
 
         assertNotNull(foundPerson, () -> "Found person should not be null");
-        assertEquals(foundPerson.getEmail(), person0.getEmail(), () -> "Found person ID should match the saved person's ID");
+        assertEquals(foundPerson.getEmail(), person0.getEmail(), () -> "Found person email should match the saved person's email");
     }
 
+    @DisplayName("Given Person Object When updatePerson Then Return Updated Person Object")
+    @Test
+    void testGivenPersonObject_whenUpdatePerson_thenReturnUpdatedPersonObject(){
+        personRepository.save(person0);
 
+        Person savedPerson = personRepository.findById(person0.getId()).get();
+        savedPerson.setFirstName("Updated Name");
+        savedPerson.setLastName("Updated Last Name");
+
+        Person updatedPerson = personRepository.save(savedPerson);
+
+        assertNotNull(updatedPerson, () -> "Found person should not be null");
+        assertEquals("Updated Name", updatedPerson.getFirstName(), () -> "Updated person's first name should match the saved person's first name");
+        assertEquals("Updated Last Name", updatedPerson.getLastName(), () -> "Updated person's last name should match the saved person's last name");
+    }
+
+    @DisplayName("Given Person Object When deletePerson Then Delete Person")
+    @Test
+    void testGivenPersonObject_whenDelete_thenRemovePerson(){
+        personRepository.save(person0);
+
+        personRepository.deleteById(person0.getId());
+        Optional<Person> foundPerson = personRepository.findById(person0.getId());
+
+        assertTrue(foundPerson.isEmpty(), () -> "Found person should not be null");
+    }
+
+    @DisplayName("Given firstName and lastName When findByJPQL Then Return Person Object")
+    @Test
+    void testGivenFirstNameAndLastName_whenFindByJPQL_thenReturnPersonObject(){
+        Person person0 = new Person("ASD", "DSA", "ayoshii@email.com", "Endereço XYZ", "male");
+
+        personRepository.save(person0);
+        Person foundPerson = personRepository.findByJPQL("ASD", "DSA");
+
+        assertEquals(person0, foundPerson, () -> "Found person should match the saved person");
+    }
+
+    @DisplayName("Given firstName and lastName When findByJPQLNamedParameters Then Return Person Object")
+    @Test
+    void testGivenFirstNameAndLastName_whenFindByJPQLNamedParameters_thenReturnPersonObject(){
+        Person person0 = new Person("ASD", "DSA", "ayoshii@email.com", "Endereço XYZ", "male");
+
+        personRepository.save(person0);
+        Person foundPerson = personRepository.findByJPQLNamedParameter("ASD", "DSA");
+
+        assertEquals(person0, foundPerson, () -> "Found person should match the saved person");
+    }
+
+    @DisplayName("Given firstName and lastName When findByNativeSQL Then Return Person Object")
+    @Test
+    void testGivenFirstNameAndLastName_whenFindByJNativeSQL_thenReturnPersonObject(){
+        Person person0 = new Person("ASD", "DSA", "ayoshii@email.com", "Endereço XYZ", "male");
+
+        personRepository.save(person0);
+        Person foundPerson = personRepository.findByNativeSQL("ASD", "DSA");
+
+        assertEquals(person0, foundPerson, () -> "Found person should match the saved person");
+    }
 }
