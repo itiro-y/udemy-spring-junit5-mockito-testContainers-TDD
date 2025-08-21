@@ -1,11 +1,24 @@
+# Configuration for tests without Testcontainers
+#spring:
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;MODE=MYSQL
+#    username: sa
+#    password:
+#
+#  jpa:
+#    hibernate:
+#      dialect: org.hibernate.dialect.H2Dialect
+#      ddl-auto: create-drop
+server:
+  port: 8888
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=false;MODE=MYSQL
-    username: sa
-    password:
-
+    driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      dialect: org.hibernate.dialect.H2Dialect
-      ddl-auto: create-drop
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show-sql: false
